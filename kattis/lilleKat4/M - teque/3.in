@@ -1,0 +1,7 @@
+6
+push_front 1
+push_front 2
+push_middle 3
+get 0
+get 1
+get 2

@@ -1,0 +1,11 @@
+builddeps - ren topo
+##pickupsticks - ren topo (efter et cycle check)
+##conservation - topo, hvor Kahn er nødvendig (tror jeg)
+
+
+extra:
+##managingpackaging - samme som pickupsticks, men med navne.
+brexit - er det overhovedet topo? ellers fin graf opgave.
+##colapse - magen til brexit.
+citations - ingen topo, men arbejder på træstruktur med dp
+??##brexitnegotiations - minimax (ikke binsearch), topo ikke nødvendig.

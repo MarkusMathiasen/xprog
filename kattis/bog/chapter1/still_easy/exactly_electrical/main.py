@@ -1,0 +1,5 @@
+a, b = map(int, input().split())
+c, d = map(int, input().split())
+t = int(input())
+x = abs(a-c)+abs(b-d)
+print("Y" if t >= x and t%2 == x%2 else "N")
