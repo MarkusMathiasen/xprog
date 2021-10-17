@@ -5,7 +5,7 @@ vector<int> store(26, 0);
 int lineNumber = 0;
 unordered_map<int, int> labelToIndex;
 
-int interpret(string& s, bool& isConst) {
+int interpret(const string& s, bool& isConst) {
 	if (isalpha(s[0])) {
 		isConst = false;
 		return s[0]-'A';
@@ -112,7 +112,7 @@ struct Print : Statement {
 		lineNumber++;
 	}
 };
-vector<unique_ptr<Statement>> lines;
+vector<Statement*> lines;
 
 void parse() {
 	int label;
@@ -120,16 +120,16 @@ void parse() {
 	while (cin >> label >> cmd) {
 		getline(cin, str);
 		if (cmd == "LET")
-			lines.push_back(make_unique<Assignment>(label, str));
+			lines.push_back(new Assignment(label, str));
 		else if (cmd == "IF")
-			lines.push_back(make_unique<Condition>(label, str));
+			lines.push_back(new Condition(label, str));
 		else if (cmd == "PRINT" || cmd == "PRINTLN")
-			lines.push_back(make_unique<Print>(label, str, cmd == "PRINTLN"));
+			lines.push_back(new Print(label, str, cmd == "PRINTLN"));
 		else throw cmd;
 	}
-	sort(lines.begin(), lines.end(), [](const unique_ptr<Statement>& a, const unique_ptr<Statement>& b) {
-			return a->label < b->label;
-			});
+	sort(lines.begin(), lines.end(), [](const Statement* a, const Statement* b) {
+		return a->label < b->label;
+	});
 	for (int i = 0; i < (int)lines.size(); i++)
 		labelToIndex[lines[i]->label] = i;
 }
