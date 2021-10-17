@@ -7,10 +7,10 @@ unordered_map<int, int> toIndex;
 unordered_map<string, int> store;
 
 int interpret(string s) {
-	if (isdigit(s[0]))
-		return stoi(s);
-	else
+	if (isalpha(s[0]))
 		return store[s];
+	else
+		return stoi(s);
 }
 
 void print(stringstream& ss) {
