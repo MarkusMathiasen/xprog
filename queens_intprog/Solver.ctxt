@@ -1,0 +1,15 @@
+#BlueJ class context
+comment0.target=Solver
+comment0.text=\nSolves\ the\ queens\ puzzle\ for\ n\ queens\ on\ a\ nxn\ chessboard.\n\ See\ https\://en.wikipedia.org/wiki/Eight_queens_puzzle/\n\n\ @author\ Joas\ Haunstrup\ and\ Daniel\ Lundgaard\n\ @version\ 28-10-2020\n
+comment1.params=min\ max
+comment1.target=void\ findNoOfSolutions(int,\ int)
+comment1.text=\n\ For\ each\ number\ in\ a\ given\ interval,\ find\ the\ number\ of\ solutions\ with\ that\ many\ queens.\n\ Print\ the\ following\ to\ the\ terminal\ for\ each\ number\ in\ the\ interval\:\ the\ number,\ the\ number\ of\ solutions,\n\ the\ time\ to\ find\ the\ solutions\ (in\ ms),\ and\ the\ average\ time\ used\ to\ find\ each\ solution\ (in\ ms).\n\ To\ avoid\ division\ by\ 0,\ the\ time\ is\ set\ to\ 1\ if\ it\ is\ 0.\n\ @param\ min\ The\ lower\ bound\ of\ the\ interval.\n\ @param\ max\ The\ upper\ bound\ of\ the\ interval.\n
+comment2.params=row
+comment2.target=void\ positionQueens(int)
+comment2.text=\nPlace\ a\ queen\ on\ the\ first\ legal\ spot\ in\ a\ given\ row.\n\ With\ recursion\ gives\ all\ solutions\ for\ a\ given\ number\ of\ queens.\n\ @param\ row\ The\ row\ in\ which\ to\ look\ for\ a\ place\ to\ put\ a\ queen.\n
+comment3.params=
+comment3.target=void\ testSolver()
+comment3.text=\n\ Test\ the\ functionality\ of\ the\ Solver\ class.\n
+comment4.params=args
+comment4.target=void\ main(java.lang.String[])
+numComments=5
