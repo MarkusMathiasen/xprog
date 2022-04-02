@@ -4,18 +4,25 @@ using namespace std;
 
 int main() {
 	int n; scanf("%d", &n);
-	vector<ii> byX, byY;
-	for (int i = 0; i < n; i++) {
-		int x, y; scanf("%d%d", &x, &y);
-		byX.push_back(ii(x, y));
-		byY.push_back(ii(x, y));
+	vector<ii> stars(n, ii());
+	for (int i = 0; i < n; i++)
+		scanf("%d%d", &stars[i].first, &stars[i].second);
+	if (n == 1) {
+		printf("%d\n", 4);
+		return 0;
 	}
-	sort(byX.begin(), byX.end());
-	sort(byY.begin(), byY.end(), [](const ii& a, const ii& b){
-		if (a.second != b.second)
-			return a.second < b.second;
-		return a.first < b.first;
-	});
-	int res = 0;
-
+	int min1 = 1e7, max1 = -1e7, min2 = 1e7, max2 = -1e7;
+	int d1 = stars[0].first + stars[0].second;
+	int d2 = stars[0].first - stars[0].second;
+	bool dia1 = true;
+	bool dia2 = true;
+	for (auto& [x,y] : stars)
+		dia1 &= x+y == d1,
+		dia2 &= x-y == d2,
+		min1 = min(x+y, min1),
+		min2 = min(x-y, min2),
+		max1 = max(x+y, max1),
+		max2 = max(x-y, max2);
+	int res = max1-min1 + max2-min2 + 4 + (dia1 || dia2);
+	printf("%d\n", res);
 }
