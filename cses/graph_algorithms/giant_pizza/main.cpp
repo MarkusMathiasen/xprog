@@ -1,47 +1,51 @@
 #include <bits/stdc++.h>
-
 using namespace std;
-#define ii pair<int, int>
-#define v vector
 
 int n, m;
-v<v<v<ii>>> graph;
-v<int> onPizza;
+vector<set<int>> graph;
+vector<bool> vis;
 
-bool choose(int pos, int op){
-	if (onPizza[pos] == op) return true;
-	if (onPizza[pos] != -1) return false;
-	onPizza[pos] = op;
-	for (int i = 0; i < graph[op][pos].size(); i++){
-		int nxt = graph[op][pos][i].first;
-		int nxtOp = graph[op][pos][i].second;
-		if (!choose(nxt, nxtOp)){
-			onPizza[pos] = -1;
+int flip(int d) {
+	return (d+m)%(2*m);
+}
+
+bool dfs(int v) {
+	if (vis[flip(v)])
+		return false;
+	if (vis[v])
+		return true;
+	vis[v] = true;
+	for (int u : graph[v]) {
+		if (!dfs(u)) {
+			vis[v] = false;
 			return false;
 		}
 	}
 	return true;
 }
 
-int main(){
-	scanf("%d %d", &n, &m);
-	graph.assign(2, v<v<ii>>(m, v<ii>()));
-	onPizza.assign(m, -1);
-	while (n--){
-		char c, d; int a, b; scanf(" %c %d %c %d", &c, &a, &d, &b); a--; b--;
-		int o1 = (c == '+'); int o2 = (d == '+');
-		graph[!o1][a].push_back(ii(b, o2));
-		graph[!o2][b].push_back(ii(a, o1));
+int main() {
+	scanf("%d%d", &n, &m);
+	graph.assign(2*m, set<int>());
+	for (int i = 0; i < n; i++) {
+		char c1, c2; int d1, d2; scanf(" %c%d %c%d", &c1, &d1, &c2, &d2); d1--; d2--;
+		d1 += c1 == '-' ? m : 0;
+		d2 += c2 == '-' ? m : 0;
+		graph[flip(d1)].insert(d2);
+		graph[flip(d2)].insert(d1);
 	}
 	bool possible = true;
-	for (int i = 0; i < m; i++)
-		if (!(choose(i, 1) || choose(i, 0)))
+	vis.assign(2*m, false);
+	for (int i = 0; i < m; i++) {
+		if (vis[i] || vis[flip(i)])
+			continue;
+		if (!dfs(i) && !dfs(flip(i)))
 			possible = false;
-	if (!possible)
-		printf("IMPOSSIBLE\n");
-	else{
-		for (int i = 0; i < m; i++)
-			printf("%c ", (onPizza[i] == 1 ? '+' : '-'));
-		printf("\n");
 	}
+	if (!possible)
+		printf("IMPOSSIBLE");
+	else
+		for (int i = 0; i < m; i++)
+			printf("%c ", vis[i] ? '+' : '-');
+	printf("\n");
 }
