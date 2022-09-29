@@ -1,41 +1,48 @@
 #include <bits/stdc++.h>
-
 using namespace std;
-#define ii pair<int, int>
-#define iii<pair<int, pair<int, int>>
+typedef long long ll;
 
 int n, m;
-vector<vector<ii>> graph, tree;
-bool vis[500];
-int speed[500];
+vector<vector<ll>> graph, mat;
+vector<bool> vis;
 
-int main(){
-	scanf("%d %d", &n, &m);
-	graph.assign(n, vector<ii>());
-	tree.assign(n, vector<ii>());
-	while (m--){
-		int a, b, c; scanf("%d %d %d", &a, &b, &c); a--; b--;
-		graph[a].push(ii(c, b));
+long long dfs(ll v, ll thres, ll flow) {
+	if (v == n-1)
+		return flow;
+	if (vis[v])
+		return 0;
+	vis[v] = true;
+	for (ll u : graph[v]) {
+		if (mat[v][u] < thres)
+			continue;
+		ll x = dfs(u, thres, min(flow, mat[v][u]));
+		if (x) {
+			mat[v][u] -= x;
+			mat[u][v] += x;
+			return x;
+		}
 	}
-	priority_queue<iii> Q;
-	vis[0] = true;
-	for (int i = 0; i < graph[0].size(); i++)
-		Q.push(iii(graph[0][i].first, ii(0, graph[0][i].second)));
-	while (!Q.empty()){
-		int c = Q.top().first;
-		int a = Q.top().second.first;
-		int b = Q.top().second.second;
-		Q.pop();
-		if (vis[b]) continue;
-		vis[b] = true;
-		tree[a].push_back(ii(c, b));
+	return 0;
+}
+
+int main() {
+	scanf("%d%d", &n, &m);
+	graph.assign(n, vector<ll>());
+	mat.assign(n, vector<ll>(n, 0));
+	while (m--) {
+		ll a, b, c; scanf("%lld%lld%lld", &a, &b, &c); a--; b--;
+		graph[a].push_back(b);
+		graph[b].push_back(a);
+		mat[a][b] += c;
 	}
-	int result = 0;
-	queue<int> q; q.push(0);
-	speed[0] = 1000000000;
-	while (!q.empty()){
-		int pos = q.front(); q.pop();
-		for (int i = 0; i < tree[pos].size(); i++)
-		
+	ll res = 0;
+	ll thres = 1e9;
+	while (thres) {
+		vis.assign(n, false);
+		ll x = dfs(0, thres, 1e18);
+		res += x;
+		if (!x)
+			thres /= 2;
 	}
+	printf("%lld\n", res);
 }
