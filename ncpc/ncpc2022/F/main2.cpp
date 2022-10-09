@@ -29,11 +29,28 @@ bool verify() {
 	return true;
 }
 
-bool cmp(string& a, string& b, int x) {
-	for (int i = 0; i < x/2+1; i++)
-		if (a[i] != b[b.size()-x+i] || a[x-i-1] != b[b.size()-i-1])
-			return false;
-	return true;
+vector<int> b;
+
+void kmp_pre(string& sub) {
+	b.assign(sub.size()+1, -1);
+	int j = -1, i = 0;
+	while (i < (int)sub.size()) {
+		while (j >= 0 && sub[j] != sub[i])
+			j = b[j];
+		j++, i++;
+		b[i] = j;
+	}
+}
+
+void kmp_search(string& s, string& sub, vector<int>& res) {
+	int i = 0, j = -1;
+	while (i < (int)s.size()-1) {
+		while (j >= 0 && s[i] != sub[j])
+			j = b[j];
+		j++, i++;
+		if (j == (int)sub.size())
+			res.push_back(i-j);
+	}
 }
 
 int main() {
@@ -53,31 +70,14 @@ int main() {
 			print_none();
 			return 0;
 		}
-		vector<int> a_cnt(26, 0), b_cnt(26, 0);
-		for (char c : a)
-			a_cnt[c-'a']++;
-		for (char c : b)
-			b_cnt[c-'a']++;
-		for (int i = 0; i < 26; i++)
-			if (a_cnt[i] != b_cnt[i]) {
-				print_none();
-				return 0;
-			}
-		string res_0, res_1;
-		bool found = false;
-		for (int i = 1; i < l; i++) {
-			if (cmp(a, b, i) && cmp(b, a, l-i)) {
-				if (found) {
-					print_many();
-					return 0;
-				}
-				found = true;
-				res_0 = a.substr(0, i);
-				res_1 = b.substr(0, l-i);
-			}
-		}
-		if (found) {
-			res = {res_0, res_1};
+		string aa = a + a;
+		vector<int> idx;
+		kmp_pre(b);
+		kmp_search(aa, b, idx);
+		if ((int)idx.size() > 1)
+			print_many();
+		else if ((int)idx.size() == 1) {
+			res = {a.substr(0, idx[0]), a.substr(idx[0])};
 			print_unique();
 		} else {
 			print_none();
