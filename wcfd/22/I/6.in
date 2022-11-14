@@ -1,0 +1,8 @@
+5 1 3
+gin 10 0
+ginfizz 0 9
+lemonjuice 12 2
+simplesyrup 5 0
+soda 20 0
+-5 gin +10 ginfizz -3 lemonjuice -1 simplesyrup -2 soda
+

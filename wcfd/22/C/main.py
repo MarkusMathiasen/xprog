@@ -1,0 +1,6 @@
+h = int(input())
+amount = sum(4**i for i in range(0, h))
+#print("amount", amount)
+cups = sum(i**2 for i in range(1, h+1))
+#print("cups", cups)
+print(amount-cups)

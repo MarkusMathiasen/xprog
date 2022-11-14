@@ -1,0 +1,9 @@
+5 2 6
+blacksun 0 3
+orangesoda 16 4
+porter 10 5
+shandy 1 3
+tequila 10 2
++2 blacksun -1 porter -1 tequila
+-2 orangesoda -1 porter +1 shandy
+

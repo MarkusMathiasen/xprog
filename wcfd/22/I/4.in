@@ -1,0 +1,8 @@
+3 3 12
+carrotjuice 1 3
+darknstormy 1 3
+princessmaker 1 3
++10 carrotjuice -1 darknstormy -1 princessmaker
+-2 carrotjuice +2 darknstormy
+-2 darknstormy +1 princessmaker
+

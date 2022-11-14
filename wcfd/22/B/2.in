@@ -1,0 +1,16 @@
++[+]            Wrap around in first cell
++++++ ++++ [    Repeat 9 times:
+  >+++++ ++++   inc cell 1 by 9
+<-]            
+>               cell 1 is now 81
+--.             output "O" (= 81 minus 2)
+----.           output "K"
+< +++++ +++++ . Line feed
+-
+[               Also check cell to the left
+  < +++++ ++++
+>-]
+<
+--. ----.       "OK"
+> +++++ +++++ . Line feed
+
