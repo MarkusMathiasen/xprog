@@ -6,6 +6,7 @@ unordered_map<string, int> m;
 int am[5], goal[5];
 int rec[5][5];
 stack<int> res;
+set<vector<int>> seen;
 
 bool is_done() {
 	bool res = true;
@@ -42,6 +43,10 @@ int main() {
 	}
 	int i = 0;
 	while (!is_done()) {
+		vector<int> state = {am[0], am[1], am[2], am[3], am[4], (int)res.size()};
+		if (seen.count(state))
+			goto stuck;
+		seen.insert(state);
 		if ((int)res.size() == t)
 			goto stuck;
 		for (i = 0; i < r; i++) {
