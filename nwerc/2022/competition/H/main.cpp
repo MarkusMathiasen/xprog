@@ -9,9 +9,9 @@ typedef pair<int, int> pii;
 typedef vector<int> vi;
 
 struct tree {
-	int l = -1, r = -1;
-	int h, rh;
-	bool vis = false;
+	int l=-1,r=-1;
+	int h=0,rh;
+	bool vis=false;
 };
 
 int n;
@@ -53,8 +53,6 @@ void compute_rh(int v) {
 }
 
 int main() {
-	cin.tie(0)->sync_with_stdio(0);
-	cin.exceptions(cin.failbit);
 	scanf("%d", &n);
 	graph.assign(n, vi());
 	rep(i, 0, n-1) {
