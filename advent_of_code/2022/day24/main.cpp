@@ -93,6 +93,10 @@ int calc_time(pii start, pii end, int start_time) {
     return res;
 }
 
+int gcd(int a, int b) {
+    return b == 0 ? a : gcd(b, a%b);
+}
+
 int main() {
 	cin.tie(0)->sync_with_stdio(0);
 	//cin.exceptions(cin.failbit);
@@ -109,9 +113,8 @@ int main() {
         }
     }
     R = sz(grid), C = sz(grid[0]);
-    cycle_size = (R-2)*(C-2);
+    cycle_size = (R-2)*(C-2)/gcd(R-2, C-2);
     compute_grids();
-    // TODO calc_times
     int res = calc_time({0, 1}, {R-1, C-2}, 0);
     res = calc_time({R-1, C-2}, {0, 1}, res);
     res = calc_time({0, 1}, {R-1, C-2}, res);
