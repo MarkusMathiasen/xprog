@@ -75,13 +75,13 @@ int main() {
 				break;
 			}
 		}
-		assert(i != N-1);
+		//assert(i != N-1);
 	}
 	ll hr = mat[ceo].count();
 	vector<ll> hri;
 	for (ll j = mat[ceo]._Find_first(); j < MAX_N; j = mat[ceo]._Find_next(j))
 		hri.push_back(j);
-	rep(perm, 0, 1<<hr) {
+	rep(perm, 0, 1<<(hr-1)) {
 		vi options(N, 7);
 		// assign ceo to hotel 0
 		options[ceo] = 1;
@@ -100,7 +100,7 @@ int main() {
 		rep(i, 0, N) {
 			if (options[i] == 1) sat.setValue(i);
 			else if (options[i] == 2 || options[i] == 4) sat.setValue(~i);
-			else assert(options[i] == 3 || options[i] == 5);
+			//else assert(options[i] == 3 || options[i] == 5);
 		}
 		for (auto [a,b] : friends) {
 			//if (a == ceo || mat[ceo][a] || b == ceo || mat[ceo][b]) continue;
@@ -114,7 +114,7 @@ int main() {
 				else if (options[i]&2) printf("2 ");
 				else {
 					printf("3 ");
-					assert(options[i]&4);
+					//assert(options[i]&4);
 				}
 			}
 			printf("\n");
