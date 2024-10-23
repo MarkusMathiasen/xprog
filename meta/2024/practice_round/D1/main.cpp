@@ -1,0 +1,29 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+#define rep(i, a, b) for(ll i = a; i < (b); ++i)
+#define all(x) begin(x), end(x)
+#define sz(x) (ll)(x).size()
+typedef long long ll;
+typedef pair<ll, ll> pii;
+typedef vector<ll> vi;
+
+ll T;
+ll N, G;
+vi A;
+
+int main() {
+	cin.tie(0)->sync_with_stdio(0);
+	//cin.exceptions(cin.failbit);
+	cin >> T;
+	rep(t, 1, T+1) {
+		printf("Case #%lld: ", t);
+		cin >> N >> G;
+		A.assign(N, 0);
+		rep(i, 0, N) cin >> A[i];
+		sort(all(A));
+		ll best = 0;
+		rep(i, 0, N) if (abs(A[i]-G) <= abs(A[best]-G)) best = i;
+		printf("%lld %lld\n", N-best, abs(A[best]-G));
+	}
+}
