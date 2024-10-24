@@ -12,8 +12,8 @@ ll N, M;
 vector<pii> A, B;
 
 bool contains(pii x, ll p) {
-	if (x.first < x.second) return x.first < p && p <= x.second;
-	else return p <= x.second || p > x.first;
+	if (x.first < x.second) return x.first <= p && p <= x.second;
+	else return p <= x.second || p >= x.first;
 }
 
 int main() {
@@ -57,26 +57,16 @@ out:;
 
 	// Find shortest cycle
 	rep(i, 0, N) B[i].second -= B[i].second >= M ? M : 0;
-	vi cycle_len(N, 0), vis(N, 0);
-	rep(i, 0, N) {
-		if (cycle_len[i]) continue;
-		queue<ll> q;
-		q.push(i);
-		while (!q.empty()) {
-			q.push(nxt[q.back()]);
-			if (cycle_len[q.back()]) {
-				while (!q.empty()) {
-					cycle_len[q.front()] = cycle_len[q.back()];
-					q.pop();
-				}
-			}
-			while (!q.empty() && contains(B[q.back()], B[q.front()].first)) {
-				cycle_len[q.front()] = sz(q);
-				q.pop();
-			}
+	vi cycle_len(N, 0);
+	queue<ll> q; q.push(0);
+	while (!cycle_len[q.front()]) {
+		q.push(nxt[q.back()]);
+		while (sz(q) > 1 && contains(B[q.back()], B[q.front()].first)) {
+			cycle_len[q.front()] = sz(q);
+			q.pop();
 		}
 	}
 	ll res = 1e9;
-	rep(i, 0, N) res = min(res, cycle_len[i]);
+	rep(i, 0, N) if (cycle_len[i]) res = min(res, cycle_len[i]);
 	printf("%lld\n", res);
 }
