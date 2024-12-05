@@ -31,55 +31,60 @@ int dfsMatching(vector<vi>& g, vi& btoa) {
 	return sz(btoa) - (int)count(all(btoa), -1);
 }
 
-void fix_cover(vi& cover, vector<vi>& g, vi& match, int A, int B) {
-    vi cont(sz(g), 0);
-    for (int i : cover) for (int j : g[i]) cont[j]++;
-    vi can_move(sz(g), 1);
-    for (int i : cover) for (int j : g[i]) can_move[i] &= cont[j] != 1 || match[j] == i;
-    bool moved = false;
-    for (int& i : cover) if (can_move[i]) {
-        moved = true;
-        i = match[i];
-        break;
-    }
-    if (!moved) {
-        cover.push_back(cover[0] < A ? A : 0);
-    }
+vi seen;
+
+bool flip(int i, vector<vi>& g, vi& match) {
+    if (i == -1) return false;
+    if (seen[i] == 2) return false;
+    if (seen[i] == 1) return true;
+    seen[i] = 1;
+
+    for (int j : g[i])
+        if (!flip(match[j], g, match)) {
+            seen[i] = 2;
+            return false;
+        }
+    return true;
 }
 
-vi cover(vector<vi>& g, int n, int m) {
-	vi match(m, -1);
-	int res = dfsMatching(g, match);
-	vector<bool> lfound(n, true), seen(m);
-	for (int it : match) if (it != -1) lfound[it] = false;
-	vi q, cover;
-	rep(i,0,n) if (lfound[i]) q.push_back(i);
-	while (!q.empty()) {
-		int i = q.back(); q.pop_back();
-		lfound[i] = 1;
-		for (int e : g[i]) if (!seen[e] && match[e] != -1) {
-			seen[e] = true;
-			q.push_back(match[e]);
-		}
-	}
-	rep(i,0,n) if (!lfound[i]) cover.push_back(i);
-	rep(i,0,m) if (seen[i]) cover.push_back(n+i);
-	int A = 0, B = 0;
-    rep(i, 0, sz(cover)) if (cover[i] < n) A++; else B++;
+vi get_res(vi match2, int n) {
+    vi cover;
+    rep(i, 0, n) if (match2[i] != -1) cover.push_back(seen[i] == 1 ? match2[i] : i);
+    bool all_flipped = true;
+    rep(i, 0, n) if (match2[i] != -1) all_flipped &= seen[i] == 1;
+    if (all_flipped) cover.push_back(0);
+    return cover;
+}
 
-    if (A == 1 || B == 1) return {0, n};
+vi cover(vector<vi> g, int n, int m) {
+	vi match(m, -1);
+	int M = dfsMatching(g, match);
+
+    // fill out data structures
     rep(i, 0, n) for (int& j : g[i]) j += n; 
     rep(i, 0, m) g.push_back({});
     rep(i, 0, n) for (int j : g[i]) g[j].push_back(i);
     vi match2(n+m, -1);
     rep(i, 0, m) {match2[n+i] = match[i]; if (match[i] != -1) match2[match[i]] = n+i;}
-    if (A == sz(cover)) {
-        fix_cover(cover, g, match2, A, B);
-    } else if (B == sz(cover)) {
-        fix_cover(cover, g, match2, A, B);
+    // done
+
+    seen.assign(n+m, 0);
+    vi cover;
+    rep(i, 0, n) if (match2[i] == -1) assert(flip(i, g, match2));
+    rep(i, 0, n) if (seen[i] == 1) {
+        return get_res(match2, n);
     }
-    assert(res >= sz(cover)-1 && res <= sz(cover));
-	return cover;
+    rep(i, 0, n) {
+        if (match2[i] == -1) continue;
+        if (flip(i, g, match2)) {
+            vi maybe = get_res(match2, n);
+            if (sz(maybe) == M) return maybe;
+        }
+        rep(i, 0, n) if (seen[i] == 1) seen[i] = 0;
+    }
+    rep(i, 0, n) if (match2[i] != -1) cover.push_back(i);
+    cover.push_back(n);
+    return cover;
 }
 
 map<string,int> ma, mb;
@@ -88,7 +93,6 @@ vector<vi> g;
 
 int main() {
 	cin.tie(0)->sync_with_stdio(0);
-	//cin.exceptions(cin.failbit);
     int n; cin >> n;
     rep(i, 0, n) {
         string a, b; cin >> a >> b;
@@ -97,10 +101,7 @@ int main() {
         g[ma[a]].push_back(mb[b]);
     }
     int A = sz(va), B = sz(vb);
-    vi int_res = cover(g, A, B);
-    vector<string> res;
-    for (int i : int_res) res.push_back(i < A ? va[i] : vb[i-A]);
-    sort(all(res));
+    vi res = cover(g, A, B);
     printf("%d\n", sz(res));
-    for (string s : res) printf("%s\n", s.c_str());
+    for (int i : res) printf("%s\n", (i < A ? va[i] : vb[i-A]).c_str());
 }
