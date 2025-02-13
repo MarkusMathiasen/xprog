@@ -9,6 +9,7 @@ typedef pair<ll, ll> pii;
 typedef vector<ll> vi;
 
 vi A;
+ll mod = 1e9+7;
 
 int main() {
 	cin.tie(0)->sync_with_stdio(0);
@@ -18,7 +19,11 @@ int main() {
 		A.resize(n);
 		rep(i, 0, n) cin >> A[i];
 		map<ll, ll> m;
-		m[0] = 3;
-		ll bits = 0;
+		m[0] = 1;
+		ll f = 0;
+		rep(i, 0, n) m[f] = (3*m[f] + 2*m[A[i]^f]) % mod, f ^= A[i];
+		ll res = 0;
+		for (auto [k, v] : m) res = (res + v) % mod;
+		printf("%lld\n", res);
 	}
 }
