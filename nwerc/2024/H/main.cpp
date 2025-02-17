@@ -8,7 +8,24 @@ typedef long long ll;
 typedef pair<ll, ll> pii;
 typedef vector<ll> vi;
 
+ll query(ll c, ll r) {
+	if (c == 0) return r;
+	printf("? %lld %lld\n", c, r);
+	fflush(stdout);
+	ll x; cin >> x;
+	return x;
+}
+
+void answer(ll c, ll r) {
+	printf("! %lld %lld\n", c, r);
+	fflush(stdout);
+}
+
 int main() {
 	cin.tie(0)->sync_with_stdio(0);
 	//cin.exceptions(cin.failbit);
+	ll n; cin >> n;
+	ll c = query(n, 1);
+	ll r = query(n-c, 1);
+	answer(c, r);
 }
