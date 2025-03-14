@@ -8,7 +8,15 @@ typedef long long ll;
 typedef pair<ll, ll> pii;
 typedef vector<ll> vi;
 
+set<pii> A;
+
 int main() {
 	cin.tie(0)->sync_with_stdio(0);
 	//cin.exceptions(cin.failbit);
+	rep(i, 0, 5) {
+		ll x, y;
+		cin >> x >> y;
+		A.insert({x, y});
+	}
+	
 }
