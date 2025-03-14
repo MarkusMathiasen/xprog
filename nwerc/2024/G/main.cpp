@@ -52,8 +52,8 @@ int main() {
 	}
 	pre.resize(n);
 	pre[0] = pts[0];
-	rep(i, 0, n-1) {
-		pre[i+1] = pre[i] + pts[i];
+	rep(i, 1, n) {
+		pre[i] = pre[i-1] + pts[i];
 	}
 	suf.resize(n);
 	suf[n-1] = pts[n-1];
